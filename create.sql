@@ -8,7 +8,7 @@ CREATE TABLE Movie (
     title VARCHAR(100),
     year INTEGER,
     rating VARCHAR(10),
-    company VARCHAR(50));
+    company VARCHAR(50)) ENGINE=INNODB;
 
 -- Actor table
 -- constraints: id is a primary key, and thus no two tuples
@@ -19,7 +19,7 @@ CREATE TABLE Actor (
     first VARCHAR(20),
     sex VARCHAR(6),
     dob DATE,
-    dod DATE);
+    dod DATE) ENGINE=INNODB;
 
 -- Director table
 -- constraints: id is a primary key, and thus no two tuples
@@ -29,7 +29,7 @@ CREATE TABLE Director(
     last VARCHAR(20),
     first VARCHAR(20),
     dob DATE,
-    dod DATE);
+    dod DATE) ENGINE=INNODB;
 
 -- MovieGenre table
 -- constraints: mid references Movie.id, and thus each mid
@@ -37,7 +37,7 @@ CREATE TABLE Director(
 -- in the Movie table
 CREATE TABLE MovieGenre(
     mid INTEGER REFERENCES Movie(id),
-    genre VARCHAR(20));
+    genre VARCHAR(20)) ENGINE=INNODB;
 
 -- MovieDirector table
 -- constraints: 
@@ -49,7 +49,7 @@ CREATE TABLE MovieGenre(
 -- in the Director table
 CREATE TABLE MovieDirector(
     mid INTEGER REFERENCES Movie(id),
-    did INTEGER REFERENCES Director(id));
+    did INTEGER REFERENCES Director(id)) ENGINE=INNODB;
 
 -- MovieActor table
 -- constraints:
@@ -62,7 +62,7 @@ CREATE TABLE MovieDirector(
 CREATE TABLE MovieActor(
     mid INTEGER REFERENCES Movie(id),
     aid INTEGER REFERENCES Actor(id),
-    role VARCHAR(50));
+    role VARCHAR(50)) ENGINE=INNODB;
 
 -- Review table
 -- constraints:
@@ -74,11 +74,11 @@ CREATE TABLE Review(
     time TIMESTAMP,
     mid INTEGER REFERENCES Movie(id),
     rating INTEGER,
-    comment VARCHAR(500));
+    comment VARCHAR(500)) ENGINE=INNODB;
 
 -- MaxPersonID table
-CREATE TABLE MaxPersonID(id INTEGER);
+CREATE TABLE MaxPersonID(id INTEGER) ENGINE=INNODB;
 
 -- MaxMovieID table
-CREATE TABLE MaxMovieID(id INTEGER);
+CREATE TABLE MaxMovieID(id INTEGER) ENGINE=INNODB;
 

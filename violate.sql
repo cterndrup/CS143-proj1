@@ -1,4 +1,4 @@
-Colin-- database modification to violate each constraint
+-- database modification to violate each constraint
 -- specified in table creation (see create.sql script)
 -- with description of each violation
 

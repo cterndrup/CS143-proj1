@@ -4,21 +4,20 @@
 
 <body>
 <!-- instructions for using query interface -->
-<p>Enter a MySQL query in the text area below to query the Movie database!</p>
+<h3>Enter a MySQL query in the text area below to query the Movie database!</h3>
 <p>Example: SELECT title FROM Movie WHERE rating='PG-13';</p>
-<p>Available Relations</p>
+<h3>Available Relations</h3>
 <ul>
-<li>Movie</li>
-<li>Actor</li>
-<li>Director</li>
-<li>MovieGenre</li>
-<li>MovieDirector</li>
-<li>MovieActor</li>
-<li>Review</li>
-<li>MaxPersonID</li>
-<li>MaxMovieID</li>
+<li>Movie(id, title, year, rating, company)</li>
+<li>Actor(id, last, first, sex, dob, dod)</li>
+<li>Director(id, last, first, dob, dod)</li>
+<li>MovieGenre(mid, genre)</li>
+<li>MovieDirector(mid, did)</li>
+<li>MovieActor(mid, aid, role)</li>
+<li>Review(name, time, mid, rating, comment)</li>
+<li>MaxPersonID(id)</li>
+<li>MaxMovieID(id)</li>
 </ul>
-<h2>Add Schema above to improve instructions</h2>
 
 <form method="GET" action="query.php">
 <!-- TEXTAREA for entering query -->
@@ -30,48 +29,48 @@
 <!-- Process user input to query database -->
 <!-- It is assumed for Part B that all input is safe -->
 <?php
-// connect to MySQL server
-$db_connection = mysql_connect("localhost", "cs143", "");
-if (!$db_connection) echo "Failed to connect to MySQL server.";
+if ($_GET["query"]) {
+    // connect to MySQL server
+    $db_connection = mysql_connect("localhost", "cs143", "");
+    if (!$db_connection) echo "Failed to connect to MySQL server.";
 
-// select which database to access
-$database = "CS143";
-$db_access= mysql_select_db($database, $db_connection);
-if (!$db_access) echo "Could not access $database database";
+    // select which database to access
+    $database = "CS143";
+    $db_access= mysql_select_db($database, $db_connection);
+    if (!$db_access) echo "Could not access $database database";
 
-// get user input
-$query = $_GET["query"];
+    // get user input
+    $query = $_GET["query"];
 
-// issue query
-$resource = mysql_query($query, $db_connection);
-if (!$resource) echo "Query: $query failed.";
-else echo "Query: $query succeeded.";
+    // issue query
+    $resource = mysql_query($query, $db_connection);
+    if (!$resource) echo "Query: $query failed.";
+    else echo "Query: $query succeeded.";
 
-// retrieve results from query
-echo '<table border="1" style="width:50%">';
-// get table headers
-$r = mysql_fetch_row($resource);
-$num_cols = mysql_num_fields($resource);
-for ($i=0; $i<$num_cols; $i++) {
-    $field_name = mysql_field_name($resource, $i);
-    echo "<th>$field_name</th>";
-}
-mysql_data_seek($resource, 0); // reset internal result pointer
-while ($row = mysql_fetch_array($resource, MYSQL_ASSOC)) {
-        echo "<tr>";
-    foreach ($row as $attr) {
-        echo "<td>$attr</td>";
+    // populate html table with results from query
+    echo '<table border="1" style="width:50%">';
+    // get table headers
+    $r = mysql_fetch_row($resource);
+    $num_cols = mysql_num_fields($resource);
+    for ($i=0; $i<$num_cols; $i++) {
+        $field_name = mysql_field_name($resource, $i);
+        echo "<th>$field_name</th>";
     }
+    mysql_data_seek($resource, 0); // reset internal result pointer
+    while ($row = mysql_fetch_array($resource, MYSQL_ASSOC)) {
+        echo "<tr>";
+        foreach ($row as $attr) {
+            echo "<td>$attr</td>";
+        }
         echo "</tr>";
+    }
+    echo '</table>';
+
+    // close connection to MySQL server
+    $closed = mysql_close($db_connection);
+    if (!$closed) echo "Failure to close connection to MySQL server.";
 }
-echo '</table>';
-
-// close connection to MySQL server
-$closed = mysql_close($db_connection);
-if (!$closed) echo "Failure to close connection to MySQL server.";
 ?>
-
-<!-- Presents results in HTML Table -->
 
 </body>
 </html>

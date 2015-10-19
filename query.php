@@ -30,7 +30,39 @@
 <!-- Process user input to query database -->
 <!-- It is assumed for Part B that all input is safe -->
 <?php
+// connect to MySQL server
+$db_connection = mysql_connect("localhost", "cs143", "");
+if (!$db_connection) echo "Failed to connect to MySQL server.";
 
+// select which database to access
+$database = "CS143";
+$db_access= mysql_select_db($database, $db_connection);
+if (!$db_access) echo "Could not access $database database";
+
+// get user input
+$query = $_GET["query"];
+
+// issue query
+$resource = mysql_query($query, $db_connection);
+if (!$resource) echo "Query: $query failed.";
+else echo "Query: $query succeeded.";
+
+// retrieve results from query
+echo '<table border="1" style="width:50%">';
+// get table headers
+//echo "<tr> <th> ... </th> </tr>"; // add table headers
+while ($row = mysql_fetch_array($resource, MYSQL_ASSOC)) {
+        echo "<tr>";
+    foreach ($row as $entry) {
+        echo "<td>$entry</td>";
+    }
+        echo "</tr>";
+}
+echo '</table>';
+
+// close connection to MySQL
+$closed = mysql_close($db_connection);
+if (!$closed) echo "Failure to close connection to MySQL server.";
 ?>
 
 <!-- Presents results in HTML Table -->

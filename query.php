@@ -45,6 +45,9 @@ if ($_GET["query"]) {
     // issue query
     $resource = mysql_query($query, $db_connection);
     if (!$resource) exit("<br><strong>Error: query '$query' failed.</strong>");
+    
+    // exit if no results returned from query
+    if (!mysql_num_rows($resource)) exit(0);
 
     // populate html table with results from query
     echo "<br>";
@@ -58,6 +61,8 @@ if ($_GET["query"]) {
     }
     $reset_ptr = mysql_data_seek($resource, 0); // reset internal result pointer
     if (!$reset_ptr) exit(mysql_errno());
+    
+    // fetch each tuple from the query results
     while ($row = mysql_fetch_array($resource, MYSQL_ASSOC)) {
         echo "<tr>";
         foreach ($row as $attr) {

@@ -32,22 +32,22 @@
 if ($_GET["query"]) {
     // connect to MySQL server
     $db_connection = mysql_connect("localhost", "cs143", "");
-    if (!$db_connection) echo "Failed to connect to MySQL server.";
+    if (!$db_connection) exit("<br><strong>Error: Could not connect to MySQL server</strong>");
 
     // select which database to access
     $database = "CS143";
     $db_access= mysql_select_db($database, $db_connection);
-    if (!$db_access) echo "Could not access $database database";
+    if (!$db_access) exit("<br><strong>Error: Could not access the database</strong>");
 
     // get user input
     $query = $_GET["query"];
 
     // issue query
     $resource = mysql_query($query, $db_connection);
-    if (!$resource) echo "Query: $query failed.";
-    else echo "Query: $query succeeded.";
+    if (!$resource) exit("<br><strong>Error: query '$query' failed.</strong>");
 
     // populate html table with results from query
+    echo "<br>";
     echo '<table border="1" style="width:50%">';
     // get table headers
     $r = mysql_fetch_row($resource);
@@ -56,7 +56,8 @@ if ($_GET["query"]) {
         $field_name = mysql_field_name($resource, $i);
         echo "<th>$field_name</th>";
     }
-    mysql_data_seek($resource, 0); // reset internal result pointer
+    $reset_ptr = mysql_data_seek($resource, 0); // reset internal result pointer
+    if (!$reset_ptr) exit(mysql_errno());
     while ($row = mysql_fetch_array($resource, MYSQL_ASSOC)) {
         echo "<tr>";
         foreach ($row as $attr) {
@@ -68,7 +69,7 @@ if ($_GET["query"]) {
 
     // close connection to MySQL server
     $closed = mysql_close($db_connection);
-    if (!$closed) echo "Failure to close connection to MySQL server.";
+    if (!$closed) exit("<br><strong>Error: failed to close connection to MySQL server.</strong>");
 }
 ?>
 

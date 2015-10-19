@@ -50,17 +50,23 @@ else echo "Query: $query succeeded.";
 // retrieve results from query
 echo '<table border="1" style="width:50%">';
 // get table headers
-//echo "<tr> <th> ... </th> </tr>"; // add table headers
+$r = mysql_fetch_row($resource);
+$num_cols = mysql_num_fields($resource);
+for ($i=0; $i<$num_cols; $i++) {
+    $field_name = mysql_field_name($resource, $i);
+    echo "<th>$field_name</th>";
+}
+mysql_data_seek($resource, 0); // reset internal result pointer
 while ($row = mysql_fetch_array($resource, MYSQL_ASSOC)) {
         echo "<tr>";
-    foreach ($row as $entry) {
-        echo "<td>$entry</td>";
+    foreach ($row as $attr) {
+        echo "<td>$attr</td>";
     }
         echo "</tr>";
 }
 echo '</table>';
 
-// close connection to MySQL
+// close connection to MySQL server
 $closed = mysql_close($db_connection);
 if (!$closed) echo "Failure to close connection to MySQL server.";
 ?>

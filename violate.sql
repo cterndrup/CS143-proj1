@@ -5,24 +5,27 @@
 -- --------------------PRIMARY KEY CONSTRAINTS-------------------
 -- primary key constraint: id is a primary key in the Movie table
 -- violating command:
-INSERT INTO Movie VALUES(1, "Harry Potter", 2001, "PG", NULL);
--- resulting output:
+-- INSERT INTO Movie VALUES(2, "Harry Potter", 2001, "PG", NULL);
+-- resulting output: ERROR 1062 (23000) at line 8: Duplicate entry '2' 
+-- for key 'PRIMARY' 
 -- why its a violation: there is already a movie in the Movie table with 
 -- this movie ID and because id is a primary key, there may only
 -- be one movie in the Movie table with a given id number
 
 -- primary key constraint: id is a primary key in the Actor table
 -- violating command:
-INSERT INTO Actor VALUES(10, "Colin", "Terndrup", "Male", "1982-01-01", NULL);
--- resulting output:
+-- INSERT INTO Actor VALUES(10, "Colin", "Terndrup", "Male", "1982-01-01", NULL);
+-- resulting output: ERROR 1062 (23000) at line 17: Duplicate entry '10'
+-- for key 'PRIMARY'
 -- why its a violation: there is already an actor in the Actor table with
 -- this actor id and because id is a primary key, there may only be one
 -- actor in the Actor table with a given id number
 
 -- primary key constraint: id is a primary key in the Director table
 -- violating command:
-INSERT INTO Director VALUES(15, "Colin", "Terndrup", "Male", "1982-01-01", NULL);
--- resulting output:
+-- INSERT INTO Director VALUES(16, "Colin", "Terndrup", "1982-01-01", NULL);
+-- resulting output: ERROR 1062 (23000) at line 26: Duplicate entry '16'
+-- for key 'PRIMARY'
 -- why its a violation: there is already a director in the Director table
 -- with this director id and because id is a primary key, there may only be
 -- one director in the director table with a given id number
@@ -32,9 +35,9 @@ INSERT INTO Director VALUES(15, "Colin", "Terndrup", "Male", "1982-01-01", NULL)
 -- --------------------REFERENTIAL INTEGRITY CONSTRAINTS-------------------
 -- referential integrity constraint: MovieGenre.mid references Movie.id
 -- violating command:
-UPDATE MovieGenre SET mid=1000000 WHERE mid=500;
+UPDATE MovieGenre SET mid=1000000 WHERE mid=2;
 -- resulting output:
--- why its a violation: The movie with id=500 cannot be updated to a value
+-- why its a violation: The movie with id=2 cannot be updated to a value
 -- that does not appear in the id column of the Movie table because
 -- MovieGenre.mid references Movie.id. In this case, it is known
 -- 1000000 is much higher than the number of movies in the database, so
@@ -60,6 +63,17 @@ INSERT INTO MovieDirector VALUES(10, -5);
 -- Director table are all greater than 0, attempting to insert a tuple into the 
 -- MovieDirector table with a value less than 0 will cause a referential
 -- integrity violation.
+
+-- referential integrity constraint: MovieActor.mid references Movie.id
+-- violating command: 
+UPDATE MovieActor SET mid=1000000 WHERE aid=8568;
+-- resulting output:
+-- why its a violation: The mid value of any MovieActor typle must belong
+-- to the set of id values in the Movie table. Because it is known there are 
+-- far fewer than 1000000 movies in the database, then it is also known there 
+-- is not a movie in the Movie table with id=1000000, which causes a referential
+-- violation to occur when attempting to set the mid to 1000000 for aid=8568
+-- in the MovieActor table.
 
 -- referential integrity constraint: MovieActor.aid references Actor.id
 -- violating command:
@@ -109,8 +123,10 @@ INSERT INTO Review VALUES("Colin Terndrup", "2015-10-20 12:02:02", 1000000, 4, "
 
 -- check constraint: Review.rating is between 1 and 5
 -- violating command: 
--- INSERT INTO Review VALUES('Colin Terndrup', '2015-10-20 12:24:05', 10, -1, 'Great film.');
+-- INSERT INTO Review VALUES("Colin Terndrup", "2015-10-20 12:24:05", 10, -1, "Great film.");
 -- why its a violation: The above command attempts to insert a new review
 -- into the Review table with a rating of -1, which causes a violation
 -- because the check constraint specifies each rating must be a value 
 -- between 1 and 5, inclusive.
+
+-- Errors messages: To be deleted

@@ -68,27 +68,25 @@ CREATE TABLE MovieDirector(
 -- (2) aid references Actor.id, and thus each aid
 -- value in the MovieActor table must reference and id value
 -- in the Actor table
--- (3) the check constraint ensures every actor must have a role
--- in the movie(s) he or she appears in
 CREATE TABLE MovieActor(
     mid INTEGER REFERENCES Movie(id),
     aid INTEGER REFERENCES Actor(id),
-    role VARCHAR(50),
-    CHECK(role IS NOT NULL)) ENGINE=INNODB;
+    role VARCHAR(50)) ENGINE=INNODB;
 
 -- Review table
 -- constraints:
 -- (1) mid references Movie.id, and thus each mid
 -- value in the Review table must reference an id value
 -- in the Movie table
--- (2) the check constraint ensures each review should have a name
+-- (2) the check constraint ensures each rating is between 1
+-- and 5 stars 
 CREATE TABLE Review(
     name VARCHAR(20),
     time TIMESTAMP,
     mid INTEGER REFERENCES Movie(id),
     rating INTEGER,
     comment VARCHAR(500),
-    CHECK(name IS NOT NULL)) ENGINE=INNODB;
+    CHECK(rating >= 1 AND rating <= 5)) ENGINE=INNODB;
 
 -- MaxPersonID table
 CREATE TABLE MaxPersonID(id INTEGER) ENGINE=INNODB;

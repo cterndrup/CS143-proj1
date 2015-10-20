@@ -45,8 +45,13 @@ CREATE TABLE Director(
 -- value in the MovieGenre table must reference an id value
 -- in the Movie table
 CREATE TABLE MovieGenre(
-    mid INTEGER REFERENCES Movie(id),
-    genre VARCHAR(20)) ENGINE=INNODB;
+    mid INTEGER,
+    genre VARCHAR(20),
+    FOREIGN KEY(mid)
+        REFERENCES Movie(id)
+        ON DELETE RESTRICT 
+        ON UPDATE RESTRICT
+    ) ENGINE=INNODB;
 
 -- MovieDirector table
 -- constraints: 
@@ -57,8 +62,17 @@ CREATE TABLE MovieGenre(
 -- value in the MovieDirector table must reference an id value
 -- in the Director table
 CREATE TABLE MovieDirector(
-    mid INTEGER REFERENCES Movie(id),
-    did INTEGER REFERENCES Director(id)) ENGINE=INNODB;
+    mid INTEGER,
+    did INTEGER,
+    FOREIGN KEY(mid)
+        REFERENCES Movie(id)
+        ON DELETE RESTRICT
+        ON UPDATE RESTRICT,
+    FOREIGN KEY(did)
+        REFERENCES Director(id)
+        ON DELETE RESTRICT
+        ON UPDATE RESTRICT
+    ) ENGINE=INNODB;
 
 -- MovieActor table
 -- constraints:
@@ -69,9 +83,18 @@ CREATE TABLE MovieDirector(
 -- value in the MovieActor table must reference and id value
 -- in the Actor table
 CREATE TABLE MovieActor(
-    mid INTEGER REFERENCES Movie(id),
-    aid INTEGER REFERENCES Actor(id),
-    role VARCHAR(50)) ENGINE=INNODB;
+    mid INTEGER,
+    aid INTEGER,
+    role VARCHAR(50),
+    FOREIGN KEY(mid)
+        REFERENCES Movie(id)
+        ON DELETE RESTRICT
+        ON UPDATE RESTRICT,
+    FOREIGN KEY(aid)
+        REFERENCES Actor(id)
+        ON DELETE RESTRICT
+        ON UPDATE RESTRICT
+    ) ENGINE=INNODB;
 
 -- Review table
 -- constraints:
@@ -83,9 +106,13 @@ CREATE TABLE MovieActor(
 CREATE TABLE Review(
     name VARCHAR(20),
     time TIMESTAMP,
-    mid INTEGER REFERENCES Movie(id),
+    mid INTEGER,
     rating INTEGER,
     comment VARCHAR(500),
+    FOREIGN KEY(mid)
+        REFERENCES Movie(id)
+        ON DELETE RESTRICT
+        ON UPDATE RESTRICT,
     CHECK(rating >= 1 AND rating <= 5)) ENGINE=INNODB;
 
 -- MaxPersonID table

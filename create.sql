@@ -11,7 +11,8 @@ CREATE TABLE Movie (
     year INTEGER,
     rating VARCHAR(10),
     company VARCHAR(50),
-    CHECK(title IS NOT NULL)) ENGINE=INNODB;
+    CHECK(title IS NOT NULL)
+) ENGINE=INNODB;
 
 -- Actor table
 -- constraints: 
@@ -25,7 +26,8 @@ CREATE TABLE Actor (
     sex VARCHAR(6),
     dob DATE,
     dod DATE,
-    CHECK(dob IS NOT NULL)) ENGINE=INNODB;
+    CHECK(dob IS NOT NULL)
+) ENGINE=INNODB;
 
 -- Director table
 -- constraints: 
@@ -38,7 +40,8 @@ CREATE TABLE Director(
     first VARCHAR(20),
     dob DATE,
     dod DATE,
-    CHECK(dob IS NOT NULL)) ENGINE=INNODB;
+    CHECK(dob IS NOT NULL)
+) ENGINE=INNODB;
 
 -- MovieGenre table
 -- constraints: mid references Movie.id, and thus each mid
@@ -51,7 +54,7 @@ CREATE TABLE MovieGenre(
         REFERENCES Movie(id)
         ON DELETE RESTRICT 
         ON UPDATE RESTRICT
-    ) ENGINE=INNODB;
+) ENGINE=INNODB;
 
 -- MovieDirector table
 -- constraints: 
@@ -72,7 +75,7 @@ CREATE TABLE MovieDirector(
         REFERENCES Director(id)
         ON DELETE RESTRICT
         ON UPDATE RESTRICT
-    ) ENGINE=INNODB;
+) ENGINE=INNODB;
 
 -- MovieActor table
 -- constraints:
@@ -94,7 +97,7 @@ CREATE TABLE MovieActor(
         REFERENCES Actor(id)
         ON DELETE RESTRICT
         ON UPDATE RESTRICT
-    ) ENGINE=INNODB;
+) ENGINE=INNODB;
 
 -- Review table
 -- constraints:
@@ -113,7 +116,8 @@ CREATE TABLE Review(
         REFERENCES Movie(id)
         ON DELETE RESTRICT
         ON UPDATE RESTRICT,
-    CHECK(rating >= 1 AND rating <= 5)) ENGINE=INNODB;
+    CHECK(rating >= 1 AND rating <= 5)
+) ENGINE=INNODB;
 
 -- MaxPersonID table
 CREATE TABLE MaxPersonID(id INTEGER) ENGINE=INNODB;

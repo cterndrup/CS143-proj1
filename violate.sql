@@ -5,7 +5,7 @@
 -- --------------------PRIMARY KEY CONSTRAINTS-------------------
 -- primary key constraint: id is a primary key in the Movie table
 -- violating command:
--- INSERT INTO Movie VALUES(2, "Harry Potter", 2001, "PG", NULL);
+INSERT INTO Movie VALUES(2, "Harry Potter", 2001, "PG", NULL);
 -- resulting output: ERROR 1062 (23000) at line 8: Duplicate entry '2' 
 -- for key 'PRIMARY' 
 -- why its a violation: there is already a movie in the Movie table with 
@@ -14,7 +14,7 @@
 
 -- primary key constraint: id is a primary key in the Actor table
 -- violating command:
--- INSERT INTO Actor VALUES(10, "Colin", "Terndrup", "Male", "1982-01-01", NULL);
+INSERT INTO Actor VALUES(10, "Colin", "Terndrup", "Male", "1982-01-01", NULL);
 -- resulting output: ERROR 1062 (23000) at line 17: Duplicate entry '10'
 -- for key 'PRIMARY'
 -- why its a violation: there is already an actor in the Actor table with
@@ -23,7 +23,7 @@
 
 -- primary key constraint: id is a primary key in the Director table
 -- violating command:
--- INSERT INTO Director VALUES(16, "Colin", "Terndrup", "1982-01-01", NULL);
+INSERT INTO Director VALUES(16, "Colin", "Terndrup", "1982-01-01", NULL);
 -- resulting output: ERROR 1062 (23000) at line 26: Duplicate entry '16'
 -- for key 'PRIMARY'
 -- why its a violation: there is already a director in the Director table
@@ -37,6 +37,7 @@
 -- violating command:
 UPDATE MovieGenre SET mid=1000000 WHERE mid=2;
 -- resulting output:
+-- ERROR 1452 (23000) at line 38: Cannot add or update a child row: a foreign key constraint fails (`CS143`.`MovieGenre`, CONSTRAINT `MovieGenre_ibfk_1` FOREIGN KEY (`mid`) REFERENCES `Movie` (`id`))
 -- why its a violation: The movie with id=2 cannot be updated to a value
 -- that does not appear in the id column of the Movie table because
 -- MovieGenre.mid references Movie.id. In this case, it is known
@@ -48,6 +49,7 @@ UPDATE MovieGenre SET mid=1000000 WHERE mid=2;
 -- violating command:
 INSERT INTO MovieDirector VALUES(-10, 100);
 -- resulting output:
+-- ERROR 1452 (23000) at line 50: Cannot add or update a child row: a foreign key constraint fails (`CS143`.`MovieDirector`, CONSTRAINT `MovieDirector_ibfk_1` FOREIGN KEY (`mid`) REFERENCES `Movie` (`id`))
 -- why its a violation: The mid value of any MovieDirector tuple must belong
 -- to the set of id values in the Movie table. Because id values in the Movie
 -- table are all greater than 0, attempting to insert a tuple into the 
@@ -58,6 +60,7 @@ INSERT INTO MovieDirector VALUES(-10, 100);
 -- violating command:
 INSERT INTO MovieDirector VALUES(10, -5);
 -- resulting output:
+-- ERROR 1452 (23000) at line 61: Cannot add or update a child row: a foreign key constraint fails (`CS143`.`MovieDirector`, CONSTRAINT `MovieDirector_ibfk_1` FOREIGN KEY (`mid`) REFERENCES `Movie` (`id`))
 -- why its a violation: The did value of any MovieDirector tuple must belong
 -- to the set of id values in the Director table. Because id values in the 
 -- Director table are all greater than 0, attempting to insert a tuple into the 
@@ -68,6 +71,7 @@ INSERT INTO MovieDirector VALUES(10, -5);
 -- violating command: 
 UPDATE MovieActor SET mid=1000000 WHERE aid=8568;
 -- resulting output:
+-- ERROR 1452 (23000) at line 72: Cannot add or update a child row: a foreign key constraint fails (`CS143`.`MovieActor`, CONSTRAINT `MovieActor_ibfk_1` FOREIGN KEY (`mid`) REFERENCES `Movie` (`id`))
 -- why its a violation: The mid value of any MovieActor typle must belong
 -- to the set of id values in the Movie table. Because it is known there are 
 -- far fewer than 1000000 movies in the database, then it is also known there 
@@ -79,6 +83,7 @@ UPDATE MovieActor SET mid=1000000 WHERE aid=8568;
 -- violating command:
 DELETE FROM Actor WHERE id=8568;
 -- resulting output:
+-- ERROR 1451 (23000) at line 84: Cannot delete or update a parent row: a foreign key constraint fails (`CS143`.`MovieActor`, CONSTRAINT `MovieActor_ibfk_2` FOREIGN KEY (`aid`) REFERENCES `Actor` (`id`))
 -- why its a violation: The aid value of any MovieActor tuple must belong 
 -- to the set of id values in the Actor table. If a tuple with id=8568 
 -- is deleted from the Actor table, then there exists at least one tuple
@@ -88,6 +93,8 @@ DELETE FROM Actor WHERE id=8568;
 -- referential integrity constraint: Review.mid references Movie.id
 -- violating command:
 INSERT INTO Review VALUES("Colin Terndrup", "2015-10-20 12:02:02", 1000000, 4, "Absolutely terrible.");
+-- resulting output:
+-- ERROR 1452 (23000) at line 95: Cannot add or update a child row: a foreign key constraint fails (`CS143`.`Review`, CONSTRAINT `Review_ibfk_1` FOREIGN KEY (`mid`) REFERENCES `Movie` (`id`))
 -- why its a violation: The mid value of any Review tuple must belong to
 -- the set of id values in the Movie table. Since it is known there are 
 -- less than 1000000 movies in the database, no movie in the Movie table
@@ -128,5 +135,3 @@ INSERT INTO Review VALUES("Colin Terndrup", "2015-10-20 12:02:02", 1000000, 4, "
 -- into the Review table with a rating of -1, which causes a violation
 -- because the check constraint specifies each rating must be a value 
 -- between 1 and 5, inclusive.
-
--- Errors messages: To be deleted

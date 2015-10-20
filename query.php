@@ -3,6 +3,7 @@
 <head><title>Query Interface for MySQL Movie DB</title></head>
 
 <body>
+<h1>Colin's Movie Database</h1>
 <!-- instructions for using query interface -->
 <h3>Enter a MySQL query in the text area below to query the Movie database!</h3>
 <p>Example: SELECT title FROM Movie WHERE rating='PG-13';</p>
@@ -19,6 +20,7 @@
 <li>MaxMovieID(id)</li>
 </ul>
 
+<!-- FORM for user input -->
 <form method="GET" action="query.php">
 <!-- TEXTAREA for entering query -->
 <textarea name="query" rows=10 cols=50></textarea><br>
@@ -32,20 +34,26 @@
 if ($_GET["query"]) {
     // connect to MySQL server
     $db_connection = mysql_connect("localhost", "cs143", "");
-    if (!$db_connection) exit("<br><strong>Error: Could not connect to MySQL server</strong>");
+    if (!$db_connection) {
+        exit("<br><strong>Error: Could not connect to MySQL server</strong>");
+    }
 
     // select which database to access
     $database = "CS143";
     $db_access= mysql_select_db($database, $db_connection);
-    if (!$db_access) exit("<br><strong>Error: Could not access the database</strong>");
-
+    if (!$db_access) {
+        $error = mysql_error($db_connection);
+        exit("<br><strong>Error: ".$error."</strong>");
+    }
     // get user input
     $query = $_GET["query"];
 
     // issue query
     $resource = mysql_query($query, $db_connection);
-    if (!$resource) exit("<br><strong>Error: query '$query' failed.</strong>");
-    
+    if (!$resource) {
+        $error = mysql_error($db_connection);
+        exit("<br><strong>Error: ".$error."</strong>");
+    } 
     // exit if no results returned from query
     if (!mysql_num_rows($resource)) exit(0);
 
@@ -74,7 +82,9 @@ if ($_GET["query"]) {
 
     // close connection to MySQL server
     $closed = mysql_close($db_connection);
-    if (!$closed) exit("<br><strong>Error: failed to close connection to MySQL server.</strong>");
+    if (!$closed) {
+        exit("<br><strong>Error: Could not close connection to MySQL server</strong>");
+    }
 }
 ?>
 

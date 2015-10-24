@@ -1,2 +1,2 @@
 # CS143-proj1
-Part B of Databases project
+Parts A, B of Databases project with MySQL and PHP

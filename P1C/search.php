@@ -1,1 +1,3 @@
-
+<?php
+    // HANDLE AND DISPLAY SEARCH RESULTS
+?>

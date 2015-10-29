@@ -6,6 +6,9 @@
 </head>
 
 <body>
+<!-- Return to main page or Actors page -->
+<a href="main.php">Return to main page</a><br>
+<a href="all.php?category=Actor">Return to Actors page</a><br>
 <?php
     // DISPLAY INFO ABOUT ACTOR/ACTRESS
     // first name and last name

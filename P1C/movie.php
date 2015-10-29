@@ -6,6 +6,9 @@
 </head>
 
 <body>
+<!-- Return to main page or actors page -->
+<a href="main.php">Return to main page</a><br>
+<a href="all.php?category=Movie">Return to Movies</a><br>
 <?php
     // DISPLAY INFO ABOUT MOVIE
     // Movie title
@@ -84,7 +87,8 @@
     echo "<h4>Add a Review!</h4>";
     echo "<form action='$actionURL' method='POST'>";
     echo "Your name: <input type='text' name='name'><br>";
-    echo "Movie: <input type='text' name='movie' value='$title' readonly><br>";
+    echo "Movie: <input type='text' name='title' value='$title' readonly>";
+    echo "<input type='hidden' name='mid' value='$mid'><br>";
     echo "Rating (1 to 5): <input type='text' name='rating'><br>";
     echo "Comments: <br><textarea rows='10' cols='50' name='comment'></textarea><br>";
     echo "<input type='submit' value='Submit!'>";
@@ -104,10 +108,14 @@
     
     // show all user comments and allower user to add comment
     while ($row = mysql_fetch_array($resource, MYSQL_ASSOC)) {
-        foreach ($row as $attr) {
-            echo "$attr ";
-        }
-        echo "<br><br>";
+        $reviewer = $row["name"];
+        $review_time = $row["time"];
+        $review_rating = $row["rating"];
+        $review_comment = $row["comment"];
+        echo "<br>Reviewer: $reviewer<br>";
+        echo "Time: $review_time<br>";
+        echo "Rating: $review_rating<br>";
+        echo "Comments: $review_comment<br>";
     }
     
     // close connection to MySQL server

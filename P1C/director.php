@@ -6,6 +6,9 @@
 </head>
 
 <body>
+<!-- Return to main page of Directors page -->
+<a href="main.php">Return to main page</a><br>
+<a href="all.php?category=Director">Return to Directors page</a><br>
 <?php 
     // DISPLAY INFO ABOUT DIRECTOR
     // first name and last name

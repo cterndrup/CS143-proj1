@@ -46,34 +46,57 @@
     // exit if no results returned from query
     if (!mysql_num_rows($resource)) exit(0);
 
-    // populate html table with results from query
-    echo "<br>";
-    //echo '<table border="1" style="width:50%">';
-    // get table headers
-    //$r = mysql_fetch_row($resource);
-    //$num_cols = mysql_num_fields($resource);
-    //for ($i=0; $i<$num_cols; $i++) {
-        //$field_name = mysql_field_name($resource, $i);
-        //echo "<th>$field_name</th>";
-    //}
-    //$reset_ptr = mysql_data_seek($resource, 0); // reset internal result pointer
-    //if (!$reset_ptr) exit(mysql_errno());
-    
-    // fetch each tuple from the query results
+    // fetch movie tuple from the query results
+    $row = mysql_fetch_array($resource, MYSQL_ASSOC);
+    echo "Released: ".$row["year"]."<br>";
+    echo "Rated: ".$row["rating"]."<br>";
+    echo "Produced by: ".$row["company"]."<br>";
+   
+    echo "<h3>Actors/Actresses</h3>"; 
+    // query for all actors/actresses in movie
+    $mid = $row["id"];
+    $query = "select Actor.first, Actor.last from Actor, MovieActor where MovieActor.mid=$mid and MovieActor.aid=Actor.id";
+
+    // issue query
+    $resource = mysql_query($query, $db_connection);
+    if (!$resource) {
+        $error = mysql_error($db_connection);
+        exit("<br><strong>Error: ".$error."</strong>");
+    } 
+    // exit if no results returned from query
+    if (!mysql_num_rows($resource)) exit(0);
+
+    // show all actors/actresses in movie
     while ($row = mysql_fetch_array($resource, MYSQL_ASSOC)) {
-        //echo "<tr>";
-        foreach ($row as $attr) {
-            //echo "<td>$attr</td>";
-            echo "$attr<br>";
-        }
-        //echo "</tr>";
+        $first = $row["first"];
+        $last = $row["last"];
+        $full_name = $first." ".$last;
+        $actorURL = "actor.php?first=".$first."&last=".$last;
+        echo "<a href=$actorURL>$full_name</a><br>";
     }
-    //echo '</table>';
     
-    // show all actors/actresses
+    echo "<h3>Reviews</h3>"; 
+    echo "ADD REVIEW -- INSERT CAPABILITY HERE";
+    // query for all user comments and allow user to add comment
+    $query = "select * from Review where mid=".$mid;
 
-    // show all user comments and allow user to add comment
-
+    // issue query
+    $resource = mysql_query($query, $db_connection);
+    if (!$resource) {
+        $error = mysql_error($db_connection);
+        exit("<br><strong>Error: ".$error."</strong>");
+    } 
+    // exit if no results returned from query
+    if (!mysql_num_rows($resource)) exit(0);
+    
+    // show all user comments and allower user to add comment
+    while ($row = mysql_fetch_array($resource, MYSQL_ASSOC)) {
+        foreach ($row as $attr) {
+            echo "$attr ";
+        }
+        echo "<br><br>";
+    }
+    
     // close connection to MySQL server
     $closed = mysql_close($db_connection);
     if (!$closed) {

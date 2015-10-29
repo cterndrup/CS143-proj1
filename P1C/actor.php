@@ -32,9 +32,7 @@
     }
 
     // create query to get all actor info
-    $first = "'$first'";
-    $last = "'$last'";
-    $query = "select * from Actor where first=$first and last=$last";
+    $query = "select * from Actor where first='$first' and last='$last'";
     
     // issue query
     $resource = mysql_query($query, $db_connection);
@@ -49,8 +47,8 @@
     $row = mysql_fetch_array($resource, MYSQL_ASSOC);
     echo "Full Name: ".$row["first"]." ".$row["last"]."<br>";
     echo "Sex: ".$row["sex"]."<br>";
-    echo "DOB: ".$row["dob"]."<br>";
-    if ($row["dod"]) { echo "DOD: ".$row["dod"]."<br>"; }
+    echo "Born: ".$row["dob"]."<br>";
+    if ($row["dod"]) echo "Died: ".$row["dod"]."<br>";
 
     echo "<h3>Movies</h3>";
     // query for all movies actor/actress has appeared in
@@ -65,15 +63,16 @@
     } 
     // exit if no results returned from query
     if (!mysql_num_rows($resource)) { 
-        echo "None";
+        echo "N/A";
         exit(0);
     }
 
     // show all movies actor/actress has appeared in
     while ($row = mysql_fetch_array($resource, MYSQL_ASSOC)) {
         $title = $row["title"];
-        $movieURL = "movie.php?title=".preg_replace("/ /", "+", $title);
-        echo "<a href=$movieURL>$title</a><br>";
+        $titleURL = preg_replace("/ /", "+", $title);
+        $movieURL = "movie.php?title=$titleURL";
+        echo "<a href='$movieURL'>$title</a><br>";
     }
 
     // close connection to MySQL server

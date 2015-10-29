@@ -70,8 +70,26 @@
             $row_attrs = $row_attrs." ".$attr;
         }
         //echo "</tr>";
-        echo "<br><a href='main.php'>$row_attrs<br>";
-        unset($row_attrs);
+        if ($category == "Movie") {
+            $title = preg_replace("/ /", "+", $row["title"]);
+            $query_string = "movie.php?title=".$title;
+            echo "<br><a href=$query_string>$row_attrs</a><br>";
+            unset($row_attrs);
+        }
+        else if ($category == "Actor") {
+            $first = $row["first"];
+            $last = $row["last"];
+            $query_string = "actor.php?first=".$first."&"."last=".$last;
+            echo "<br><a href=$query_string>$row_attrs<br>";
+            unset($row_attrs);
+        }
+        else if ($category == "Director") {
+            $first = $row["first"];
+            $last = $row["last"];
+            $query_string = "director.php?first=".$first."&"."last=".$last;
+            echo "<br><a href=$query_string>$row_attrs<br>";
+            unset($row_attrs);
+        }
     }
     //echo '</table>';
 

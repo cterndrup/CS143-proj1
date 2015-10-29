@@ -82,7 +82,7 @@
     }
    
     // Reviews section
-    $actionURL = "post_review.php";
+    $actionURL = "review.php";
     echo "<h3>Reviews</h3>"; 
     echo "<h4>Add a Review!</h4>";
     echo "<form action='$actionURL' method='POST'>";

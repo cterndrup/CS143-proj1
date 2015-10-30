@@ -17,8 +17,14 @@
     echo "</form>";
     
     // add movie, actor, or director
-    $postURL = "post.php?category=$category";
-    echo "<a href='$postURL'>Add new $category!</a><br>";
+    $addURL = "add.php?category=$category";
+    echo "<a href='$addURL'>Add new $category!</a><br>";
+    if ($category == "Movie") {
+        echo "<a href='main.php'>Add Actor to $category</a><br>";
+        echo "<a href='main.php'>Add Director to $category</a><br>";
+    } else {
+        echo "<a href='main.php'>Add $category to Movie</a><br>";
+    }
 
     // connect to MySQL server
     $db_connection = mysql_connect("localhost", "cs143", "");
@@ -36,13 +42,13 @@
    
    // create query to retrieve all movies, actors, or directors 
    if ($category == "Movie") {
-        $query = "select title, year from ".$category;
+        $query = "select title, year from $category order by title asc";
     }
     else if ($category == "Actor") {
-        $query = "select first, last from ".$category;
+        $query = "select first, last from $category order by last asc";
     }
     else if ($category == "Director") {
-        $query = "select first, last from ".$category;
+        $query = "select first, last from $category order by last asc";
     }
 
     $headline = $category."s";

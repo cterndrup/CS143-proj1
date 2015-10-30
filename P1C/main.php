@@ -21,7 +21,7 @@
 <!-- search box for keyword search interface -->
 <div class="search">
 <form action="search.php" method="GET">
-    Search!<br>
+    Search for a movie, actor, or director!<br>
     <input type="text" name="query"><br>
     <input type="submit" value="Search">
 </form>

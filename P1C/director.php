@@ -6,8 +6,8 @@
 </head>
 
 <body>
-<!-- Return to main page of Directors page -->
-<a href="main.php">Return to main page</a><br>
+<!-- Return to home page of Directors page -->
+<a href="main.php">Return to home page</a><br>
 <a href="all.php?category=Director">Return to Directors page</a><br>
 <?php 
     // DISPLAY INFO ABOUT DIRECTOR
@@ -47,13 +47,15 @@
 
     // fetch each tuple from the query results
     $row = mysql_fetch_array($resource, MYSQL_ASSOC);
-    echo "Full Name: ".$row["first"]." ".$row["last"]."<br>";
+    echo "Full Name: $first $last<br>";
     echo "Born: ".$row["dob"]."<br>";
     if ($row["dod"]) echo "Died: ".$row["dod"]."<br>";
+    $did = $row["id"];
 
     echo "<h3>Movies</h3>";
+    $addToMovieURL = "add_to_movie.php?from=director&first=$first&last=$last&id=$did";
+    echo "<a href=$addToMovieURL>Add $first $last to a movie!</a><br><br>";
     // query for all movies director directed
-    $did = $row["id"];
     $query = "select title from Movie, MovieDirector where did=$did and mid=id order by title asc";
 
     // issue query

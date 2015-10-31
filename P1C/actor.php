@@ -6,8 +6,8 @@
 </head>
 
 <body>
-<!-- Return to main page or Actors page -->
-<a href="main.php">Return to main page</a><br>
+<!-- Return to home page or Actors page -->
+<a href="main.php">Return to home page</a><br>
 <a href="all.php?category=Actor">Return to Actors page</a><br>
 <?php
     // DISPLAY INFO ABOUT ACTOR/ACTRESS
@@ -48,14 +48,16 @@
 
     // fetch Actor tuple from the query results
     $row = mysql_fetch_array($resource, MYSQL_ASSOC);
-    echo "Full Name: ".$row["first"]." ".$row["last"]."<br>";
+    echo "Full Name: $first $last<br>";
     echo "Sex: ".$row["sex"]."<br>";
     echo "Born: ".$row["dob"]."<br>";
     if ($row["dod"]) echo "Died: ".$row["dod"]."<br>";
+    $aid = $row["id"];
 
     echo "<h3>Movies</h3>";
+    $addToMovieURL = "add_to_movie.php?from=actor&first=$first&last=$last&id=$aid";
+    echo "<a href=$addToMovieURL>Add $first $last to a movie!</a><br><br>"; 
     // query for all movies actor/actress has appeared in
-    $aid = $row["id"];
     $query = "select title from Movie, MovieActor where aid=$aid and id=mid order by title asc";
 
     // issue query

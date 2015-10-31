@@ -6,8 +6,8 @@
 </head>
 
 <body>
-<!-- Return to main page or actors page -->
-<a href="main.php">Return to main page</a><br>
+<!-- Return to home page or actors page -->
+<a href="main.php">Return to home page</a><br>
 <a href="all.php?category=Movie">Return to Movies</a><br>
 <?php
     // DISPLAY INFO ABOUT MOVIE
@@ -63,10 +63,20 @@
         $error = mysql_error($db_connection);
         exit("<br><strong>Error: ".$error."</strong>");
     } 
-    // exit if no results returned from query
-    if (!mysql_num_rows($resource)) exit(0);
     $row = mysql_fetch_array($resource, MYSQL_ASSOC);
-    echo "Genre: ".$row["genre"];
+    if ($row["genre"]) echo "Genre: ".$row["genre"]."<br>";
+    else echo "Genre: N/A<br>";
+    // get average user rating for movie
+    $query = "select AVG(rating) from Review where mid=$mid";
+    // issue query
+    $resource = mysql_query($query, $db_connection);
+    if (!$resource) {
+        $error = mysql_error($db_connection);
+        exit("<br><strong>Error: ".$error."</strong>");
+    } 
+    $row = mysql_fetch_array($resource, MYSQL_ASSOC);
+    if ($row["AVG(rating)"]) echo "Average User Rating: ".$row["AVG(rating)"];
+    else echo "Average User Rating: N/A"; 
    
     echo "<h3>Actors/Actresses</h3>"; 
     // query for all actors/actresses in movie
@@ -81,26 +91,25 @@
     // exit if no results returned from query
     if (!mysql_num_rows($resource)) {
         echo "N/A";
-        exit(0);
+    }
+    else {
+        // show all actors/actresses in movie
+        while ($row = mysql_fetch_array($resource, MYSQL_ASSOC)) {
+            $first = $row["first"];
+            $last = $row["last"];
+            $full_name = "$first $last";
+            $actorURL = "actor.php?first=$first&last=$last";
+            echo "<a href='$actorURL'>$full_name</a><br>";
+        }
     }
 
-    // show all actors/actresses in movie
-    while ($row = mysql_fetch_array($resource, MYSQL_ASSOC)) {
-        $first = $row["first"];
-        $last = $row["last"];
-        $full_name = "$first $last";
-        $actorURL = "actor.php?first=$first&last=$last";
-        echo "<a href='$actorURL'>$full_name</a><br>";
-    }
-   
     // Reviews section
     $actionURL = "review.php";
     echo "<h3>Reviews</h3>"; 
     echo "<h4>Add a Review!</h4>";
-    echo "<form action='$actionURL' method='POST'>";
+    echo "<form action='$actionURL' method='GET'>";
     echo "Your name: <input type='text' name='name'><br>";
     echo "Movie: <input type='text' name='title' value='$title' readonly>";
-    echo "<input type='hidden' name='mid' value='$mid'><br>";
     echo "Rating (1 to 5): <input type='text' name='rating'><br>";
     echo "Comments: <br><textarea rows='10' cols='50' name='comment'></textarea><br>";
     echo "<input type='submit' value='Submit!'>";
@@ -118,7 +127,7 @@
     // exit if no results returned from query
     if (!mysql_num_rows($resource)) exit(0);
     
-    // show all user comments and allower user to add comment
+    // show all user comments
     while ($row = mysql_fetch_array($resource, MYSQL_ASSOC)) {
         $reviewer = $row["name"];
         $review_time = $row["time"];

@@ -20,11 +20,12 @@
     $addURL = "add.php?category=$category";
     echo "<a href='$addURL'>Add new $category!</a><br>";
     if ($category == "Movie") {
-        echo "<a href='main.php'>Add Actor to $category</a><br>";
-        echo "<a href='main.php'>Add Director to $category</a><br>";
-    } else {
-        echo "<a href='main.php'>Add $category to Movie</a><br>";
-    }
+        $addURL = "add_to_movie.php?from=all&category=Movie&person_type=";
+        $addActorToMovieURL = $addURL."actor";
+        $addDirectorToMovieURL = $addURL."director";
+        echo "<a href='$addActorToMovieURL'>Add Actor to $category</a><br>";
+        echo "<a href='$addDirectorToMovieURL'>Add Director to $category</a><br>";
+    } 
 
     // connect to MySQL server
     $db_connection = mysql_connect("localhost", "cs143", "");

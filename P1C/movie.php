@@ -54,10 +54,22 @@
     echo "Released: ".$row["year"]."<br>";
     echo "Rated: ".$row["rating"]."<br>";
     echo "Produced by: ".$row["company"]."<br>";
+    // get movie genre
+    $mid = $row["id"];
+    $query = "select genre from MovieGenre where mid=$mid";
+    // issue query
+    $resource = mysql_query($query, $db_connection);
+    if (!$resource) {
+        $error = mysql_error($db_connection);
+        exit("<br><strong>Error: ".$error."</strong>");
+    } 
+    // exit if no results returned from query
+    if (!mysql_num_rows($resource)) exit(0);
+    $row = mysql_fetch_array($resource, MYSQL_ASSOC);
+    echo "Genre: ".$row["genre"];
    
     echo "<h3>Actors/Actresses</h3>"; 
     // query for all actors/actresses in movie
-    $mid = $row["id"];
     $query = "select Actor.first, Actor.last from Actor, MovieActor where MovieActor.mid=$mid and MovieActor.aid=Actor.id order by Actor.last asc";
 
     // issue query

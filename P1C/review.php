@@ -6,8 +6,23 @@
 <!-- If insert is successful, display message and review -->
 <!-- If not, display appropriate error and prompt user back to prev page -->
 <?php
+    // function to sanitize form input before its used in query
+    function sanitize_input($input, $type, $link_id) {
+       if ($input == "") return "NULL";
+       else {
+           if ($type == "string") {
+               $sanitized_input = mysql_real_escape_string($input, $link_id);
+               if (!$sanitized_input) {
+                   exit("Error in user input: try again");
+               }
+               else return "'".$sanitized_input."'";
+           }
+           else return $input;
+       } 
+    }
+    
     // link to return to movie page
-    $title = $_POST["title"];
+    $title = $_GET["title"];
     $titleURL = preg_replace("/  /", "+", $title);
     $movieURL = "movie.php?title=$titleURL";
     echo "<a href='$movieURL'>Return to $title</a><br>";
@@ -23,17 +38,24 @@
         mysql_close($db_connection);
         exit(1);
     }
+    
+    // query the db for the movie id
+    $query = "select id from Movie where title='$title'";
+    $resource = mysql_query($query, $db_connection);
+    if (!$resource) {
+        echo mysql_error($db_connection);
+        mysql_close($db_connection);
+        exit(1);
+    }
+    $row = mysql_fetch_array($resource, MYSQL_ASSOC);
+    $mid = $row["id"];
 
     // query the db to insert new review into Review table
-    $name = $_POST["name"];
+    $name = sanitize_input($_GET["name"], "string", $db_connection);
     $time = date('Y-m-d H:i:s'); 
-    $mid = $_POST["mid"];
-    $rating = $_POST["rating"];
-    $comment = $_POST["comment"];
-    // need to escape ' in name and comment if they exist
-    $esc_name = mysql_real_escape_string($name, $db_connection);
-    $esc_comment = mysql_real_escape_string($comment, $db_connection);
-    $insert_comment = "insert into Review values ('$esc_name', '$time', $mid, $rating, '$esc_comment')";
+    $rating = sanitize_input($_GET["rating"], "string", $db_connection);
+    $comment = sanitize_input($_GET["comment"], "string", $db_connection);
+    $insert_comment = "insert into Review values ($name, $time, $mid, $rating, $comment)";
     $result = mysql_query($insert_comment, $db_connection);
     if (!$result) {
         echo mysql_error($db_connection);

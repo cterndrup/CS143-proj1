@@ -48,9 +48,9 @@
 
     // fetch each tuple from the query results
     $row = mysql_fetch_array($resource, MYSQL_ASSOC);
-    echo "Full Name: $first $last<br>";
-    echo "Born: ".$row["dob"]."<br>";
-    if ($row["dod"]) echo "Died: ".$row["dod"]."<br>";
+    echo "<strong>Full Name:</strong> $first $last<br>";
+    echo "<strong>Born:</strong> ".$row["dob"]."<br>";
+    if ($row["dod"]) echo "<strong>Died:</strong> ".$row["dod"]."<br>";
     $did = $row["id"];
 
     echo "<h3>Movies</h3>";

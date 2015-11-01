@@ -52,9 +52,9 @@
 
     // fetch movie tuple from the query results
     $row = mysql_fetch_array($resource, MYSQL_ASSOC);
-    echo "Released: ".$row["year"]."<br>";
-    echo "Rated: ".$row["rating"]."<br>";
-    echo "Produced by: ".$row["company"]."<br>";
+    echo "<strong>Released:</strong> ".$row["year"]."<br>";
+    echo "<strong>Rated:</strong> ".$row["rating"]."<br>";
+    echo "<strong>Produced by:</strong> ".$row["company"]."<br>";
     // get movie genre
     $mid = $row["id"];
     $query = "select genre from MovieGenre where mid=$mid";
@@ -65,8 +65,8 @@
         exit("<br><strong>Error: ".$error."</strong>");
     } 
     $row = mysql_fetch_array($resource, MYSQL_ASSOC);
-    if ($row["genre"]) echo "Genre: ".$row["genre"]."<br>";
-    else echo "Genre: N/A<br>";
+    if ($row["genre"]) echo "<strong>Genre:</strong> ".$row["genre"]."<br>";
+    else echo "<strong>Genre:</strong> N/A<br>";
     // get average user rating for movie
     $query = "select AVG(rating) from Review where mid=$mid";
     // issue query
@@ -76,8 +76,8 @@
         exit("<br><strong>Error: ".$error."</strong>");
     } 
     $row = mysql_fetch_array($resource, MYSQL_ASSOC);
-    if ($row["AVG(rating)"]) echo "Average User Rating: ".$row["AVG(rating)"];
-    else echo "Average User Rating: N/A"; 
+    if ($row["AVG(rating)"]) echo "<strong>Average User Rating:</strong> ".$row["AVG(rating)"];
+    else echo "<strong>Average User Rating:</strong> N/A"; 
    
     echo "<h3>Actors/Actresses</h3>"; 
     // query for all actors/actresses in movie
@@ -109,10 +109,10 @@
     echo "<h3>Reviews</h3>"; 
     echo "<h4>Add a Review!</h4>";
     echo "<form action='$actionURL' method='GET'>";
-    echo "Your name: <input type='text' name='name'><br>";
-    echo "Movie: <input type='text' name='title' value='$title' readonly>";
-    echo "Rating (1 to 5): <input type='text' name='rating'><br>";
-    echo "Comments: <br><textarea rows='10' cols='50' name='comment'></textarea><br>";
+    echo "<strong>Your name:</strong> <input type='text' name='name'><br>";
+    echo "<strong>Movie:</strong> <input type='text' name='title' value='$title' readonly><br>";
+    echo "<strong>Rating (1 to 5):</strong> <input type='text' name='rating'><br>";
+    echo "<strong>Comments:</strong> <br><textarea rows='10' cols='50' name='comment'></textarea><br>";
     echo "<input type='submit' value='Submit!'>";
     echo "</form>";
 
@@ -134,10 +134,10 @@
         $review_time = $row["time"];
         $review_rating = $row["rating"];
         $review_comment = $row["comment"];
-        echo "<br>Reviewer: $reviewer<br>";
-        echo "Time: $review_time<br>";
-        echo "Rating: $review_rating<br>";
-        echo "Comments: $review_comment<br>";
+        echo "<br><strong>Reviewer:</strong> $reviewer<br>";
+        echo "<strong>Time:</strong> $review_time<br>";
+        echo "<strong>Rating:</strong> $review_rating<br>";
+        echo "<strong>Comments:</strong> $review_comment<br>";
     }
     
     // close connection to MySQL server

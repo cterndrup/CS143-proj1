@@ -29,11 +29,11 @@
     function print_form($from, $first=NULL, $last=NULL, $id=NULL) {
         if ($from == "main" or $from == "all") {
             echo "<form action=add_to_movie.php method='GET'>";
-            echo "First Name: <input type='text' name='first'><br>";
-            echo "Last Name: <input type='text' name='last'><br>";
-            echo "Movie: <input type='text' name='title'><br>";
+            echo "<strong>First Name:</strong> <input type='text' name='first'><br>";
+            echo "<strong>Last Name:</strong> <input type='text' name='last'><br>";
+            echo "<strong>Movie:</strong> <input type='text' name='title'><br>";
             if ($from == "all" and $_GET["person_type"] == "actor") {
-                echo "Role: <input type='text' name='role'><br>";
+                echo "<strong>Role:</strong> <input type='text' name='role'><br>";
             }
             echo "<input type='submit' value='Add!'>";
             if ($_GET["person_type"]) {
@@ -45,10 +45,10 @@
         }
         else if ($from == "actor" or $from == "director") {
             echo "<form action=add_to_movie.php method='GET'>";
-            echo "First Name: <input type='text' name='first' value='$first' readonly><br>";
-            echo "Last Name: <input type='text' name='last' value='$last' readonly><br>";
-            echo "Movie: <input type='text' name='title'><br>";
-            if ($from == "actor") echo "Role: <input type='text' name='role'><br>";
+            echo "<strong>First Name:</strong> <input type='text' name='first' value='$first' readonly><br>";
+            echo "<strong>Last Name:</strong> <input type='text' name='last' value='$last' readonly><br>";
+            echo "<strong>Movie:</strong> <input type='text' name='title'><br>";
+            if ($from == "actor") echo "<strong>Role:</strong> <input type='text' name='role'><br>";
             echo "<input type='submit' value='Add'>";
             echo "<input type='hidden' name='id' value='$id'>";
             echo "<input type='hidden' name='from' value='self'>";
@@ -64,7 +64,7 @@
     if ($_GET["from"] == "main" or $_GET["from"] == "all") {
         $returnURL = $_GET["from"] == "main" ? "main.php" : "all.php?category=Movie"; 
         $previous_page = $_GET["from"] == "main" ? $_GET["from"] : "Movies";
-        echo "<a href='$returnURL'>Back to $previous_page page</a><br>";
+        echo "<a href='$returnURL'>Back to $previous_page page</a><br><br>";
         print_form($_GET["from"]);
     } else if ($_GET["from"] == "actor" or $_GET["from"] == "director") {
         $person_type = $_GET["from"];

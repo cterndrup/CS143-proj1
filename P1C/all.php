@@ -15,7 +15,7 @@
     $origin = lcfirst($category);
     echo "<h3>Search</h3>";
     echo '<form action="search.php" method="GET">';
-    echo "Search for a $category!";
+    echo "Search for a $category!<br>";
     echo '<input type="text" name="search">';
     echo '<input type="submit" value="Search"><br>';
     echo "<input type='hidden' name='origin' value='$origin'>";

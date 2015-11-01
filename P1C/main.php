@@ -22,8 +22,9 @@
 <div class="search">
 <form action="search.php" method="GET">
     Search for a movie, actor, or director!<br>
-    <input type="text" name="query"><br>
-    <input type="submit" value="Search">
+    <input type="text" name="search"><br>
+    <input type="submit" value="Search"><br>
+    <input type="hidden" name="origin" value="main">
 </form>
 </div>
 

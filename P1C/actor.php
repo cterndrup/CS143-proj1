@@ -3,6 +3,7 @@
 
 <head>
     <title>Colin's Movie DB</title>
+    <link rel="stylesheet" type="text/css" href="universal.css">
 </head>
 
 <body>
@@ -58,7 +59,7 @@
     $addToMovieURL = "add_to_movie.php?from=actor&first=$first&last=$last&id=$aid";
     echo "<a href=$addToMovieURL>Add $first $last to a movie!</a><br><br>"; 
     // query for all movies actor/actress has appeared in
-    $query = "select title from Movie, MovieActor where aid=$aid and id=mid order by title asc";
+    $query = "select title, role from Movie, MovieActor where aid=$aid and id=mid order by title asc";
 
     // issue query
     $resource = mysql_query($query, $db_connection);
@@ -75,9 +76,10 @@
     // show all movies actor/actress has appeared in
     while ($row = mysql_fetch_array($resource, MYSQL_ASSOC)) {
         $title = $row["title"];
+        $role = $row["role"];
         $titleURL = preg_replace("/ /", "+", $title);
         $movieURL = "movie.php?title=$titleURL";
-        echo "<a href='$movieURL'>$title</a><br>";
+        echo "<a href='$movieURL'>$title</a> as $role<br>";
     }
 
     // close connection to MySQL server

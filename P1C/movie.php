@@ -3,6 +3,7 @@
 
 <head>
     <title>Colin's Movie DB</title>
+    <link rel="stylesheet" type="text/css" href="universal.css">
 </head>
 
 <body>
@@ -80,7 +81,7 @@
    
     echo "<h3>Actors/Actresses</h3>"; 
     // query for all actors/actresses in movie
-    $query = "select Actor.first, Actor.last from Actor, MovieActor where MovieActor.mid=$mid and MovieActor.aid=Actor.id order by Actor.last asc";
+    $query = "select Actor.first, Actor.last, MovieActor.role from Actor, MovieActor where MovieActor.mid=$mid and MovieActor.aid=Actor.id order by Actor.last asc";
 
     // issue query
     $resource = mysql_query($query, $db_connection);
@@ -97,9 +98,9 @@
         while ($row = mysql_fetch_array($resource, MYSQL_ASSOC)) {
             $first = $row["first"];
             $last = $row["last"];
-            $full_name = "$first $last";
+            $role = $row["role"];
             $actorURL = "actor.php?first=$first&last=$last";
-            echo "<a href='$actorURL'>$full_name</a><br>";
+            echo "<a href='$actorURL'>$first $last</a> as $role<br>";
         }
     }
 

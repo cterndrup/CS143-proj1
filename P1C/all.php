@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
-<head><title>Colin's Movie DB</title></head>
+<head>
+    <title>Colin's Movie DB</title>
+    <link rel="stylesheet" type="text/css" href="universal.css">
+</head>
 
 <body>
 <a href="main.php">Back to home page</a><br><br>
@@ -9,14 +12,17 @@
     $category = $_GET["category"];
 
     // search box
+    $origin = lcfirst($category);
     echo "<h3>Search</h3>";
     echo '<form action="search.php" method="GET">';
     echo "Search for a $category!";
-    echo '<input type="text" name="query">';
+    echo '<input type="text" name="search">';
     echo '<input type="submit" value="Search"><br>';
+    echo "<input type='hidden' name='origin' value='$origin'>";
     echo "</form>";
     
     // add movie, actor, or director
+    echo "<h3>Add</h3>";
     $addURL = "add.php?category=$category";
     echo "<a href='$addURL'>Add new $category!</a><br>";
     if ($category == "Movie") {

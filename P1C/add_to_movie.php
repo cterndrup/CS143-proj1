@@ -1,6 +1,9 @@
 <!DOCTYPE HTML>
 <html>
-<head><title>Colin's Movie DB</title></head>
+<head>
+    <title>Colin's Movie DB</title>
+    <link rel="stylesheet" type="text/css" href="universal.css">
+</head>
 
 <body>
 <?php
@@ -105,7 +108,7 @@
         }
         $num_results = mysql_num_rows($resource);
         if ($num_results == 0) {
-            echo "<h1>Movie $title does not exist in the database</h1>";
+            echo "<h1>Movie '$title' does not exist in the database</h1>";
             mysql_close($db_connection);
             exit(1);
         }
@@ -128,7 +131,7 @@
             }
             $num_results = mysql_num_rows($resource);
             if ($num_results == 0) {
-                echo "<h1>$person_type $first $last does not exist in the database</h1>";
+                echo "<h1>$person_type '$first $last' does not exist in the database</h1>";
                 mysql_close($db_connection);
                 exit(1);
             }

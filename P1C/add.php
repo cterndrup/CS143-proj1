@@ -1,6 +1,9 @@
 <!DOCTYPE HTML>
 <html>
-<head><title>Colin's Movie DB</title></head>
+<head>
+    <title>Colin's Movie DB</title>
+    <link rel="stylesheet" type="text/css" href="universal.css">
+</head>
 
 <body>
 <?php

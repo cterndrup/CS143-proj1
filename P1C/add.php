@@ -13,28 +13,47 @@
         echo "<form action='add.php' method='GET'>";
         echo "<input type='hidden' name='new' value='$category'>";
         if ($category == "Movie") {
-            echo "Title: <input type='text' name='title'><br>";
-            echo "Year: <input type='text' name='year'><br>";
-            echo "Rating: <select type='text' name='rating'>";
+            echo "<strong>Title:</strong> <input type='text' name='title'><br>";
+            echo "<strong>Year:</strong> <input type='text' name='year'><br>";
+            echo "<strong>Rating:</strong> <select type='text' name='rating'>";
             echo "<option>G</option><option>PG</option>";
             echo "<option>PG-13</option><option>R</option>";
             echo "<option>NC-17</option><option>surrendere</option>";
             echo "</select><br>";
-            echo "Genre:<br>";
-            echo "Company: <input type='text' name='company'><br>";
+            echo "<strong>Genre:</strong> <br>";
+            echo "<input type='checkbox' name='genre[]' value='Action'> Action ";
+            echo "<input type='checkbox' name='genre[]' value='Adult'> Adult ";
+            echo "<input type='checkbox' name='genre[]' value='Adventure'> Adventure ";
+            echo "<input type='checkbox' name='genre[]' value='Animation'> Animation ";
+            echo "<input type='checkbox' name='genre[]' value='Comedy'> Comedy ";
+            echo "<input type='checkbox' name='genre[]' value='Crime'> Crime ";
+            echo "<input type='checkbox' name='genre[]' value='Documentary'> Documentary ";
+            echo "<input type='checkbox' name='genre[]' value='Drama'> Drama ";
+            echo "<input type='checkbox' name='genre[]' value='Family'> Family ";
+            echo "<input type='checkbox' name='genre[]' value='Fantasy'> Fantasy <br>";
+            echo "<input type='checkbox' name='genre[]' value='Horror'> Horror ";
+            echo "<input type='checkbox' name='genre[]' value='Musical'> Musical ";
+            echo "<input type='checkbox' name='genre[]' value='Mystery'> Mystery ";
+            echo "<input type='checkbox' name='genre[]' value='Romance'> Romance ";
+            echo "<input type='checkbox' name='genre[]' value='Sci-Fi'> Sci-Fi ";
+            echo "<input type='checkbox' name='genre[]' value='Short'> Short ";
+            echo "<input type='checkbox' name='genre[]' value='Thriller'> Thriller ";
+            echo "<input type='checkbox' name='genre[]' value='War'> War ";
+            echo "<input type='checkbox' name='genre[]' value='Western'> Western<br> ";
+            echo "<strong>Company</strong>: <input type='text' name='company'><br>";
         }
         else if ($category == "Actor") {
-            echo "First Name: <input type='text' name='first'><br>";
-            echo "Last Name: <input type='text' name='last'><br>";
-            echo "Sex: <input type='text' name='sex'><br>";
-            echo "Born: <input type='text' name='dob'><br>";
-            echo "Died: <input type='text' name='dod'><br>";
+            echo "<strong>First Name:</strong> <input type='text' name='first'><br>";
+            echo "<strong>Last Name:</strong> <input type='text' name='last'><br>";
+            echo "<strong>Sex:</strong> <input type='text' name='sex'><br>";
+            echo "<strong>Born:</strong> <input type='text' name='dob'><br>";
+            echo "<strong>Died:</strong> <input type='text' name='dod'><br>";
         }
         else if ($category == "Director") {
-            echo "First Name: <input type='text' name='first'><br>";
-            echo "Last Name: <input type='text' name='last'><br>";
-            echo "Born: <input type='text' name='dob'><br>";
-            echo "Died: <input type='text' name='dod'><br>";
+            echo "<strong>First Name:</strong> <input type='text' name='first'><br>";
+            echo "<strong>Last Name:</strong> <input type='text' name='last'><br>";
+            echo "<strong>Born:</strong> <input type='text' name='dob'><br>";
+            echo "<strong>Died:</strong> <input type='text' name='dod'><br>";
         }
         echo "<input type='submit' value='Add'>";
         echo "</form>";
@@ -146,6 +165,27 @@
             exit(1);
         }
     
+        // update id value in database
+        $result = mysql_query($update, $db_connection);
+        if (!$result) {
+            echo mysql_error($db_connection);
+            mysql_close($db_connection);
+            exit(1);
+        }
+ 
+        // enter genres into MovieGenre table if movie was added
+        if ($category == "Movie") {
+            foreach ($_GET["genre"] as $genre) {
+                $query = "insert into MovieGenre values ($new_id, '$genre')";
+                $result = mysql_query($query, $db_connection);
+                if (!$result) {
+                    echo mysql_error($db_connection);
+                    mysql_close($db_connection);
+                    exit(1);
+                }
+            }
+        }
+
         // show successful insert message or appropriate error message
         if ($category == "Movie") {
             $title = $_GET["title"];
@@ -156,14 +196,6 @@
             echo "<h1>$full_name successfully added!</h1>";
         }
     
-        // update id value in database
-        $result = mysql_query($update, $db_connection);
-        if (!$result) {
-            echo mysql_error($db_connection);
-            mysql_close($db_connection);
-            exit(1);
-        }
- 
         // close connection to MySQL server
         $closed = mysql_close($db_connection);
         if (!$closed) {

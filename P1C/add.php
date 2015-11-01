@@ -205,6 +205,7 @@
  
     } else {
         // if pages accessed with no parameters passed in URL
+        echo "<a href='main.php'>Back to home page</a>";
     }
     
 ?>

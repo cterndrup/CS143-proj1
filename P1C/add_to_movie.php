@@ -174,6 +174,7 @@
          
     } else {
         // if this page is visited without parameters passed in URL
+        echo "<a href='main.php'>Back to home page</a>";
     }
 
 ?>

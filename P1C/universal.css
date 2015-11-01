@@ -1,0 +1,26 @@
+/* stylesheet for all files, other than main.php */
+
+a {
+    color: #3a83c4;
+    text-decoration: underline;
+}
+
+a:link {
+    color: #3a83c4;
+    text-decoration: underline;
+}
+
+a:visited {
+    color: #3a83c4;
+    text-decoration: underline;
+}
+
+a:hover {
+    color: #ffea00;
+    text-decoration: none;
+}
+
+a:active {
+    color: #3a83c4;
+    text-decoration: underline;
+}

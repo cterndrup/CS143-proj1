@@ -55,10 +55,10 @@
 
     // query the db to insert new review into Review table
     $name = sanitize_input($_GET["name"], "string", $db_connection);
-    $time = date('Y-m-d H:i:s'); 
-    $rating = sanitize_input($_GET["rating"], "string", $db_connection);
+    $time = date('Y-m-d H:i:s');
+    $rating = sanitize_input($_GET["rating"], "number", $db_connection);
     $comment = sanitize_input($_GET["comment"], "string", $db_connection);
-    $insert_comment = "insert into Review values ($name, $time, $mid, $rating, $comment)";
+    $insert_comment = "insert into Review values ($name, '$time', $mid, $rating, $comment)";
     $result = mysql_query($insert_comment, $db_connection);
     if (!$result) {
         echo mysql_error($db_connection);
@@ -67,6 +67,7 @@
     }
     
     // show successful insert message
+    $name = $_GET["name"];
     echo "<h1>Thanks for submitting a review, $name!</h1>";
    
     // close connection to MySQL server

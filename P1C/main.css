@@ -15,6 +15,27 @@ h1 {
 }
 
 .list ul li a {
+    color: #3a83c4;
+    text-decoration: none;
+}
+
+.list ul li a:link {
+    color: #3a83c4;
+    text-decoration: none;
+}
+
+.list ul li a:visited {
+    color: #3a83c4;
+    text-decoration: none;
+}
+
+.list ul li a:hover {
+    color: #ffea00;
+    text-decoration: underline;
+}
+
+.list ul li a:active {
+    color: #3a83c4;
     text-decoration: none;
 }
 

@@ -1,0 +1,82 @@
+/* stylesheet for index.php */
+
+h1, h3, h4 {
+    text-align: center;
+}
+
+h1 {
+    font-size: 300%;
+}
+
+.hlist ul {
+    padding: 0;
+    list-style-type: none;
+    text-align: center;
+}
+
+.hlist ul li {
+    display: inline;
+}
+
+.hlist ul li a {
+    color: #3a83c4;
+    text-decoration: none;
+}
+
+.hlist ul li a:link {
+    color: #3a83c4;
+    text-decoration: none;
+}
+
+.hlist ul li a:visited {
+    color: #3a83c4;
+    text-decoration: none;
+}
+
+.hlist ul li a:hover {
+    color: #ffea00;
+    text-decoration: underline;
+}
+
+.hlist ul li a:active {
+    color: #3a83c4;
+    text-decoration: none;
+}
+
+.vlist ul {
+    padding: 0;
+    list-style-type: none;
+    text-align: center;
+}
+
+/*.vlist ul li {
+    display: inline;
+}*/
+
+.vlist ul li a {
+    color: #3a83c4;
+    text-decoration: none;
+}
+
+.vlist ul li a:link {
+    color: #3a83c4;
+    text-decoration: none;
+}
+
+.vlist ul li a:visited {
+    color: #3a83c4;
+    text-decoration: none;
+}
+
+.vlist ul li a:hover {
+    color: #ffea00;
+    text-decoration: underline;
+}
+
+.vlist ul li a:active {
+    color: #3a83c4;
+    text-decoration: none;
+}
+.search form {
+    text-align: center;
+}

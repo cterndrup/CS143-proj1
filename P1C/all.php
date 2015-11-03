@@ -6,7 +6,7 @@
 </head>
 
 <body>
-<a href="main.php">Back to home page</a><br><br>
+<a href="index.php">Back to home page</a><br><br>
 <?php
     if ($_GET) {
         // get all of category specified in url

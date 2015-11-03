@@ -8,7 +8,7 @@
 
 <body>
 <!-- Return to home page or actors page -->
-<a href="main.php">Return to home page</a><br>
+<a href="index.php">Return to home page</a><br>
 <a href="all.php?category=Movie">Return to Movies</a><br>
 <?php
     // DISPLAY INFO ABOUT MOVIE
@@ -54,7 +54,7 @@
         // fetch movie tuple from the query results
         $row = mysql_fetch_array($resource, MYSQL_ASSOC);
         echo "<strong>Released:</strong> ".$row["year"]."<br>";
-        echo "<strong>Rated:</strong> ".$row["rating"]."<br>";
+        echo "<strong>MPAA Rating:</strong> ".$row["rating"]."<br>";
         echo "<strong>Produced by:</strong> ".$row["company"]."<br>";
         // get movie genre
         $mid = $row["id"];
@@ -66,10 +66,22 @@
             exit("<br><strong>Error: ".$error."</strong>");
         } 
         $row = mysql_fetch_array($resource, MYSQL_ASSOC);
-        if ($row["genre"]) echo "<strong>Genre:</strong> ".$row["genre"]."<br>";
-        else echo "<strong>Genre:</strong> N/A<br>";
+        $nrows = mysql_num_rows($resource);
+        if (empty($row["genre"])) echo "<strong>Genre:</strong> N/A<br>";
+        else {
+            echo "<strong>Genre:</strong>";
+            mysql_data_seek($resource, 0);
+            $i = 1;
+            while ($row = mysql_fetch_array($resource, MYSQL_ASSOC)) {
+                $genre = $row["genre"];
+                if ($i < $nrows) echo " $genre,";
+                else echo " $genre";
+                $i++;
+            }
+            echo "<br>";
+        }
         // get average user rating for movie
-        $query = "select ROUND(AVG(rating),2) from Review where mid=$mid";
+        $query = "select ROUND(AVG(rating),1) from Review where mid=$mid";
         // issue query
         $resource = mysql_query($query, $db_connection);
         if (!$resource) {
@@ -77,7 +89,7 @@
             exit("<br><strong>Error: ".$error."</strong>");
         } 
         $row = mysql_fetch_array($resource, MYSQL_ASSOC);
-        if ($row["ROUND(AVG(rating),2)"]) echo "<strong>Average User Rating:</strong> ".$row["ROUND(AVG(rating),2)"];
+        if ($row["ROUND(AVG(rating),1)"]) echo "<strong>Average User Rating:</strong> ".$row["ROUND(AVG(rating),1)"];
         else echo "<strong>Average User Rating:</strong> N/A"; 
    
         echo "<h3>Actors/Actresses</h3>"; 
@@ -106,10 +118,9 @@
         }
 
         // Reviews section
-        $actionURL = "review.php";
         echo "<h3>Reviews</h3>"; 
         echo "<h4>Add a Review!</h4>";
-        echo "<form action='$actionURL' method='GET'>";
+        echo "<form action='review.php' method='GET'>";
         echo "<strong>Your name:</strong> <input type='text' name='name'><br>";
         echo "<strong>Movie:</strong> <input type='text' name='title' value='$title' readonly><br>";
         echo "<strong>Rating (1 to 5):</strong> <input type='text' name='rating'><br>";

@@ -8,7 +8,7 @@
 
 <body>
 <!-- Return to home page of Directors page -->
-<a href="main.php">Return to home page</a><br>
+<a href="index.php">Return to home page</a><br>
 <a href="all.php?category=Director">Return to Directors page</a><br>
 <?php 
     // DISPLAY INFO ABOUT DIRECTOR
@@ -49,14 +49,14 @@
 
         // fetch each tuple from the query results
         $row = mysql_fetch_array($resource, MYSQL_ASSOC);
-        echo "<strong>Full Name:</strong> $first $last<br>";
-        echo "<strong>Born:</strong> ".$row["dob"]."<br>";
-        if ($row["dod"]) echo "<strong>Died:</strong> ".$row["dod"]."<br>";
+        echo "<strong>First Name:</strong> $first<br>";
+        echo "<strong>Last Name:</strong> $last<br>";
+        echo "<strong>Date of Birth:</strong> ".$row["dob"]."<br>";
+        if ($row["dod"]) echo "<strong>Date of Death:</strong> ".$row["dod"]."<br>";
+        else echo "<strong>Date of Death:</strong> Still Alive<br>";
         $did = $row["id"];
 
         echo "<h3>Movies</h3>";
-        $addToMovieURL = "add_to_movie.php?from=director&first=$first&last=$last&id=$did";
-        echo "<a href=$addToMovieURL>Add $first $last to a movie!</a><br><br>";
         // query for all movies director directed
         $query = "select title from Movie, MovieDirector where did=$did and mid=id order by title asc";
 
@@ -69,6 +69,8 @@
         // exit if no results returned from query
         if (!mysql_num_rows($resource)) {
             echo "N/A";
+            $addToMovieURL = "add_to_movie.php?from=director&first=$first&last=$last&id=$did";
+            echo "<br><br><a href=$addToMovieURL>Add $first $last to a movie!</a><br>";
             exit(0);
         }
 
@@ -79,6 +81,9 @@
             $movieURL = "movie.php?title=$titleURL";
             echo "<a href='$movieURL'>$title</a><br>";
         }
+
+        $addToMovieURL = "add_to_movie.php?from=director&first=$first&last=$last&id=$did";
+        echo "<br><a href=$addToMovieURL>Add $first $last to a movie!</a><br>";
 
         // close connection to MySQL server
         $closed = mysql_close($db_connection);

@@ -6,6 +6,7 @@
 </head>
 
 <body>
+<a href="index.php">Back to home page</a><br>
 <?php
     // functions to print form based on whether new movie, actor, or
     // director will be added to database
@@ -15,7 +16,7 @@
         if ($category == "Movie") {
             echo "<strong>Title:</strong> <input type='text' name='title'><br>";
             echo "<strong>Year:</strong> <input type='text' name='year'><br>";
-            echo "<strong>Rating:</strong> <select type='text' name='rating'>";
+            echo "<strong>MPAA Rating:</strong> <select type='text' name='rating'>";
             echo "<option>G</option><option>PG</option>";
             echo "<option>PG-13</option><option>R</option>";
             echo "<option>NC-17</option><option>surrendere</option>";
@@ -45,15 +46,16 @@
         else if ($category == "Actor") {
             echo "<strong>First Name:</strong> <input type='text' name='first'><br>";
             echo "<strong>Last Name:</strong> <input type='text' name='last'><br>";
-            echo "<strong>Sex:</strong> <input type='text' name='sex'><br>";
-            echo "<strong>Born:</strong> <input type='text' name='dob'><br>";
-            echo "<strong>Died:</strong> <input type='text' name='dod'><br>";
+            echo "<strong>Sex:</strong> <input type='radio' name='sex' value='Male'> Male";
+            echo "<input type='radio' name='sex' value='Female'> Female<br>";
+            echo "<strong>Date of Birth:</strong> <input type='text' name='dob'><br>";
+            echo "<strong>Date of Death:</strong> <input type='text' name='dod'><br>";
         }
         else if ($category == "Director") {
             echo "<strong>First Name:</strong> <input type='text' name='first'><br>";
             echo "<strong>Last Name:</strong> <input type='text' name='last'><br>";
-            echo "<strong>Born:</strong> <input type='text' name='dob'><br>";
-            echo "<strong>Died:</strong> <input type='text' name='dod'><br>";
+            echo "<strong>Date of Birth:</strong> <input type='text' name='dob'><br>";
+            echo "<strong>Date of Death:</strong> <input type='text' name='dod'><br>";
         }
         echo "<input type='submit' value='Add'>";
         echo "</form>";
@@ -63,17 +65,17 @@
     // will be added to database
     function create_query($category, $id, $link_id) {
         if ($category == "Movie") {
-            $title = sanitize_input($_GET["title"], "string", $link_id);
-            $year = sanitize_input($_GET["year"], "number", $link_id);
-            $rating = sanitize_input($_GET["rating"], "string", $link_id);
-            $company = sanitize_input($_GET["company"], "string", $link_id);
+            $title = sanitize_input(trim($_GET["title"]), "string", $link_id);
+            $year = sanitize_input(trim($_GET["year"]), "number", $link_id);
+            $rating = sanitize_input(trim($_GET["rating"]), "string", $link_id);
+            $company = sanitize_input(trim($_GET["company"]), "string", $link_id);
             $query = "insert into Movie values($id, $title, $year, $rating, $company)";
         }
         else {
-            $first = sanitize_input($_GET["first"], "string", $link_id);
-            $last = sanitize_input($_GET["last"], "string", $link_id);
-            $dob = sanitize_input($_GET["dob"], "string", $link_id);
-            $dod = sanitize_input($_GET["dod"], "string", $link_id);
+            $first = sanitize_input(trim($_GET["first"]), "string", $link_id);
+            $last = sanitize_input(trim($_GET["last"]), "string", $link_id);
+            $dob = sanitize_input(trim($_GET["dob"]), "string", $link_id);
+            $dod = sanitize_input(trim($_GET["dod"]), "string", $link_id);
             if ($category == "Actor") {
                 $sex = sanitize_input($_GET["sex"], "string", $link_id);
                 $query = "insert into Actor values($id, $last, $first, $sex, $dob, $dod)";
@@ -92,7 +94,7 @@
            if ($type == "string") {
                $sanitized_input = mysql_real_escape_string($input, $link_id);
                if (!$sanitized_input) {
-                   exit("Error in user input: try again");
+                   exit("<br><strong>Error in user input: try again</strong>");
                }
                else return "'".$sanitized_input."'";
            }
@@ -124,12 +126,13 @@
         // handle posting of form
         // connect to MySQL server
         $db_connection = mysql_connect("localhost", "cs143", "");
-        if (!$db_connection) exit("Error: Failure to connect to MySQL server");
+        if (!$db_connection) exit("<br><strong>Error: Failure to connect to MySQL server</strong>");
 
         // select MySQL database
         $db = mysql_select_db("CS143", $db_connection);
         if (!$db) {
-            echo mysql_error($db_connection);
+            $error = mysql_error($db_connection);
+            echo "<br><strong>$error</strong>";
             mysql_close($db_connection);
             exit(1);
         }
@@ -149,7 +152,8 @@
         // issue query to get next movie or person ID 
         $resource = mysql_query($query, $db_connection);
         if (!$resource) {
-            echo mysql_error($db_connection);
+            $error = mysql_error($db_connection);
+            echo "<br><strong>$error</strong>";
             mysql_close($db_connection);
             exit(1);
         }
@@ -160,7 +164,8 @@
         $query = create_query($category, $new_id, $db_connection);
         $result = mysql_query($query, $db_connection);
         if (!$result) {
-            echo mysql_error($db_connection);
+            $error = mysql_error($db_connection);
+            echo "<br><strong>$error</strong>";
             mysql_close($db_connection);
             exit(1);
         }
@@ -168,7 +173,8 @@
         // update id value in database
         $result = mysql_query($update, $db_connection);
         if (!$result) {
-            echo mysql_error($db_connection);
+            $error = mysql_error($db_connection);
+            echo "<br><strong>$error</strong>";
             mysql_close($db_connection);
             exit(1);
         }
@@ -179,7 +185,8 @@
                 $query = "insert into MovieGenre values ($new_id, '$genre')";
                 $result = mysql_query($query, $db_connection);
                 if (!$result) {
-                    echo mysql_error($db_connection);
+                    $error = mysql_error($db_connection);
+                    echo "<br><strong>$error</strong>";
                     mysql_close($db_connection);
                     exit(1);
                 }
@@ -188,24 +195,26 @@
 
         // show successful insert message or appropriate error message
         if ($category == "Movie") {
-            $title = $_GET["title"];
+            $title = trim($_GET["title"]);
             echo "<h1>$title added successfully!</h1>";
         }
         else {
-            $full_name = $_GET["first"]." ".$_GET["last"];
-            echo "<h1>$full_name successfully added!</h1>";
+            $first = trim($_GET["first"]);
+            $last = trim($_GET["last"]);
+            echo "<h1>$first $last successfully added!</h1>";
         }
     
         // close connection to MySQL server
         $closed = mysql_close($db_connection);
         if (!$closed) {
-            echo mysql_error($db_connection);
+            $error = mysql_error($db_connection);
+            echo "<br><strong>$error</strong>";
             exit(1);
         }
  
     } else {
         // if pages accessed with no parameters passed in URL
-        echo "<a href='main.php'>Back to home page</a>";
+        echo "<a href='index.php'>Back to home page</a>";
     }
     
 ?>

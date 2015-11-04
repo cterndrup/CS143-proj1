@@ -53,10 +53,10 @@
             $query = "select title, year from $category order by title asc";
         }
         else if ($category == "Actor") {
-            $query = "select first, last from $category order by last asc";
+            $query = "select first, last, dob from $category order by last asc";
         }
         else if ($category == "Director") {
-            $query = "select first, last from $category order by last asc";
+            $query = "select first, last, dob from $category order by last asc";
         }
 
         $headline = $category."s";
@@ -82,14 +82,16 @@
             else if ($category == "Actor") {
                 $first = $row["first"];
                 $last = $row["last"];
+                $dob = $row["dob"];
                 $actorURL = "actor.php?first=$first&last=$last";
-                echo "<a href=$actorURL>$first $last<br><br>";
+                echo "<a href=$actorURL>$first $last ($dob)<br><br>";
             }
             else if ($category == "Director") {
                 $first = $row["first"];
                 $last = $row["last"];
+                $dob = $row["dob"];
                 $directorURL = "director.php?first=$first&last=$last";
-                echo "<a href=$directorURL>$first $last<br><br>";
+                echo "<a href=$directorURL>$first $last ($dob)<br><br>";
             }
         }
 

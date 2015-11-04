@@ -55,9 +55,35 @@
         $row = mysql_fetch_array($resource, MYSQL_ASSOC);
         echo "<strong>Released:</strong> ".$row["year"]."<br>";
         echo "<strong>MPAA Rating:</strong> ".$row["rating"]."<br>";
-        echo "<strong>Produced by:</strong> ".$row["company"]."<br>";
-        // get movie genre
+        echo "<strong>Company:</strong> ".$row["company"]."<br>";
+        
+        // get movie director
         $mid = $row["id"];
+        $query = "select first, last from MovieDirector, Director where did=id and mid=$mid order by last asc, first asc";
+        // issue query
+        $resource = mysql_query($query, $db_connection);
+        if (!$resource) {
+            $error = mysql_error($db_connection);
+            exit("<br><strong>Error: ".$error."</strong>");
+        } 
+        $row = mysql_fetch_array($resource, MYSQL_ASSOC);
+        $nrows = mysql_num_rows($resource);
+        if (empty($row)) echo "<strong>Director:</strong> N/A<br>";
+        else {
+            echo "<strong>Director:</strong>";
+            mysql_data_seek($resource, 0);
+            $i = 1;
+            while ($row = mysql_fetch_array($resource, MYSQL_ASSOC)) {
+                $first = $row["first"];
+                $last = $row["last"];
+                if ($i < $nrows) echo " $first $last,";
+                else echo " $first $last";
+                $i++;
+            }
+            echo "<br>";
+        }
+        
+        // get movie genre
         $query = "select genre from MovieGenre where mid=$mid";
         // issue query
         $resource = mysql_query($query, $db_connection);
@@ -80,6 +106,7 @@
             }
             echo "<br>";
         }
+
         // get average user rating for movie
         $query = "select ROUND(AVG(rating),1) from Review where mid=$mid";
         // issue query
@@ -119,17 +146,17 @@
 
         // Reviews section
         echo "<h3>Reviews</h3>"; 
-        echo "<h4>Add a Review!</h4>";
+        /*echo "<h4>Add a Review!</h4>";
         echo "<form action='review.php' method='GET'>";
         echo "<strong>Your name:</strong> <input type='text' name='name'><br>";
         echo "<strong>Movie:</strong> <input type='text' name='title' value='$title' readonly><br>";
         echo "<strong>Rating (1 to 5):</strong> <input type='text' name='rating'><br>";
         echo "<strong>Comments:</strong> <br><textarea rows='10' cols='50' name='comment'></textarea><br>";
         echo "<input type='submit' value='Submit!'>";
-        echo "</form>";
+        echo "</form>";*/
 
         // query for all user comments and allow user to add comment
-        $query = "select * from Review where mid=".$mid;
+        $query = "select * from Review where mid=$mid order by time desc";
 
         // issue query
         $resource = mysql_query($query, $db_connection);
@@ -137,20 +164,23 @@
             $error = mysql_error($db_connection);
             exit("<br><strong>Error: ".$error."</strong>");
         } 
-        // exit if no results returned from query
-        if (!mysql_num_rows($resource)) exit(0);
-    
-        // show all user comments
-        while ($row = mysql_fetch_array($resource, MYSQL_ASSOC)) {
-            $reviewer = $row["name"];
-            $review_time = $row["time"];
-            $review_rating = $row["rating"];
-            $review_comment = $row["comment"];
-            echo "<br><strong>Reviewer:</strong> $reviewer<br>";
-            echo "<strong>Time:</strong> $review_time<br>";
-            echo "<strong>Rating:</strong> $review_rating<br>";
-            echo "<strong>Comments:</strong> $review_comment<br>";
+        // if there are results returned from query, then show them
+        if (mysql_num_rows($resource)) {
+            // show all user comments
+            while ($row = mysql_fetch_array($resource, MYSQL_ASSOC)) {
+                $reviewer = $row["name"];
+                $review_time = $row["time"];
+                $review_rating = $row["rating"];
+                $review_comment = $row["comment"];
+                echo "<br><strong>Reviewer:</strong> $reviewer<br>";
+                echo "<strong>Time:</strong> $review_time<br>";
+                echo "<strong>Rating:</strong> $review_rating<br>";
+                echo "<strong>Comments:</strong> $review_comment<br>";
+            }
         }
+
+        // provide link to add a review
+        echo "<br><a href='add_review.php?title=$title'>Add a review to $title!</a><br>";
     
         // close connection to MySQL server
         $closed = mysql_close($db_connection);

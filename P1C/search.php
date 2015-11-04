@@ -112,8 +112,9 @@
                 while ($row = mysql_fetch_array($resource, MYSQL_ASSOC)) {
                     $first = $row["first"];
                     $last = $row["last"];
+                    $dob = $row["dob"];
                     $actorURL = "actor.php?first=$first&last=$last";
-                    echo "<li><a href='$actorURL'>$first $last</a></li>";
+                    echo "<li><a href='$actorURL'>$first $last ($dob)</a></li>";
                 }
                 echo "</ul>";
             }
@@ -163,8 +164,9 @@
                 while ($row = mysql_fetch_array($resource, MYSQL_ASSOC)) {
                     $first = $row["first"];
                     $last = $row["last"];
+                    $dob = $row["dob"];
                     $actorURL = "actor.php?first=$first&last=$last";
-                    echo "<li><a href='$actorURL'>$first $last</a></li>";
+                    echo "<li><a href='$actorURL'>$first $last ($dob)</a></li>";
                 }
                 echo "</ul>";
             }
@@ -189,9 +191,10 @@
                 mysql_data_seek($resource, 0);
                 echo "<ul>";  
                 while ($row = mysql_fetch_array($resource, MYSQL_ASSOC)) {
-                    $title = $row["title"];
+                    $title = $row["title"]; 
+                    $year = $row["year"];
                     $movieURL = "movie.php?title=$title";
-                    echo "<li><a href='$movieURL'>$title</a></li>";
+                    echo "<li><a href='$movieURL'>$title ($year)</a></li>";
                 }
                 echo "</ul>";
             }
@@ -218,8 +221,9 @@
                 while ($row = mysql_fetch_array($resource, MYSQL_ASSOC)) {
                     $first = $row["first"];
                     $last = $row["last"];
+                    $dob = $row["dob"];
                     $directorURL = "director.php?first=$first&last=$last";
-                    echo "<li><a href='$directorURL'>$first $last</a></li>";
+                    echo "<li><a href='$directorURL'>$first $last ($dob)</a></li>";
                 }
                 echo "</ul>";
             }

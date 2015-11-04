@@ -8,6 +8,7 @@
 <body>
 <!-- If insert is successful, display message and review -->
 <!-- If not, display appropriate error and prompt user back to prev page -->
+<a href='index.php'>Back to home page</a><br>
 <?php
     // function to sanitize form input before its used in query
     function sanitize_input($input, $type, $link_id) {
@@ -29,7 +30,7 @@
         $title = trim($_GET["title"]);
         $titleURL = preg_replace("/  /", "+", $title);
         $movieURL = "movie.php?title=$titleURL";
-        echo "<a href='$movieURL'>Return to $title</a><br>";
+        echo "<a href='$movieURL'>Go to $title</a><br>";
 
         // connect to MySQL server
         $db_connection = mysql_connect("localhost", "cs143", "");
@@ -83,7 +84,7 @@
         }
     } else {
         // page reached without URL parameters
-        echo "<a href='index.php'>Back to home page</a>";
+        //echo "<a href='index.php'>Back to home page</a>";
     }
 ?>
 </body>

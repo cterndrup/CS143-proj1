@@ -37,6 +37,7 @@
         <li><a href="add.php?category=Director">Add Director</a></li>
         <li><a href="add_to_movie.php?from=index&person_type=actor">Add Actor to Movie</a></li>
         <li><a href="add_to_movie.php?from=index&person_type=director">Add Director to Movie</a></li>
+        <li><a href="add_review.php">Add Review to Movie</a></li>
     </ul>
 </div>
 

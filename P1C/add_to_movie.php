@@ -74,7 +74,7 @@
         $id = $_GET["id"];
         $personURL = "$person_type.php?first=$first&last=$last";
         echo "<a href='index.php'>Back to home page</a><br>";
-        echo "<a href='$personURL'>Back to $first $last</a><br><br>";
+        echo "<a href='$personURL'>Go to $first $last</a><br><br>";
         echo "<h1>Add $person_type to movie!</h1>";
         print_form($person_type, $first, $last, $id);
     } else if ($_GET["from"] == "self") {
@@ -86,7 +86,6 @@
         $last = trim($_GET["last"]);
         $personURL = "$person_type.php?first=$first&last=$last";
         echo "<a href='index.php'>Back to home page</a><br>";
-        echo "<a href='$personURL'>Back to $first $last</a><br><br>";
     
         // connect to MySQL server
         $db_connection = mysql_connect("localhost", "cs143", "");
@@ -172,6 +171,7 @@
         }
 
         // print success message
+        echo "<a href='$personURL'>Go to $first $last</a><br><br>";
         echo "<h1>$first $last added successfully to $title!</h1>";
 
         // close connection to MySQL server
